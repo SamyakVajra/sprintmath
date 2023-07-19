@@ -58,15 +58,16 @@
 .Radio-container
 {
     width: 90%;
-    height: 75px;
+    height: 80px;
     margin: 25px;
     cursor: pointer;
     border: 2px solid black;
     border-radius: 5px;
 }
 label{
-    position: realtive;
-    top: 10px;
+    position: center;
+    justify-content: center;
+    top: 80%;
     left: 20px;
     font-size: 30px;
 
