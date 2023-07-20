@@ -65,15 +65,9 @@
     border-radius: 5px;
 }
 label{
-<<<<<<< HEAD
     position: relative;
     justify-content: center;
     top: 20px;
-=======
-    position: center;
-    justify-content: center;
-    top: 80%;
->>>>>>> 3d77cc6cdb5afb5e7f8ad83aaa96e62163d92e34
     left: 20px;
     font-size: 30px;
 
