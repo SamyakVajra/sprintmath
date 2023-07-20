@@ -99,45 +99,110 @@ function countDownStart()
 function getRandomInt(max){
     return Math.floor(Math.random() * Math.floor(max))
 }
+
 //create correct or incorrect random equations
-function createequations()
-{
-    //random choose how many correct eqaution
-    const correctEquations = getRandomInt(questionAmount);
-    const wrongEquations = questionAmount - correctEquations;
-    
-    //loop create equation and push to array
-    for(let i=0; i<correctEquations;i++){
-     firstnumer = getRandomInt(20);
-     secondnumber = getRandomInt(20);
-     const eqauationValue = firstnumer * secondnumber;
-     const equation = `${firstnumer} X ${secondnumber} = ${eqauationValue}`;
-     equationobject = {value: equation,evaluated: 'true'};
-     equationsArray.push(equationobject);
-    } 
-    //loop crate wrong equations and puush into array
-    for(let i=0;i<wrongEquations;i++)
-    {
+// Randomly choose the operator
+const operators = ["X", "+", "-", "/"];
+const operator = operators[getRandomInt(operators.length)];
+function createequations() {
+    equationsArray = []; // Clear the array to start fresh
+    const correctEquations = getRandomInt(questionAmount - 1) + 1; // Random number of correct equations (at least 1)
+    const wrongEquations = questionAmount - correctEquations; // Remaining equations will be incorrect
+  
+    let count = 0;
+    let correctCount = 0;
+  
+    while (count < questionAmount) {
+      if (correctCount < correctEquations) {
+        // Generate a correct equation
         firstnumer = getRandomInt(20);
         secondnumber = getRandomInt(20);
-        const eqauationValue = firstnumer * secondnumber;
-        wrongFormat[0] = `${firstnumer} X ${secondnumber+1}=${eqauationValue}`;
-        wrongFormat[1] = `${firstnumer+1} X ${secondnumber}=${eqauationValue}`;
-        wrongFormat[2] = `${firstnumer} X ${secondnumber}=${eqauationValue+2}`;
-        const formatchoice = getRandomInt(3);
-        const equation = wrongFormat[formatchoice];
-        equationobject = {value: equation,evaluated: 'false'};
-        // if((firstnumer==0 || secondnumber==0) && eqauationValue==0)
-        // {
-        //     const equation = wrongFormat[formatchoice];
-        //     equationobject = {value: equation,evaluated: 'true'};
-        // }
+  
+        // Randomly choose the operator
+        const operators = ["X", "+", "-", "/"];
+        const operator = operators[getRandomInt(operators.length)];
+  
+        let equation;
+        let evaluated;
+  
+        // Generate the equation based on the randomly selected operator
+        switch (operator) {
+          case "X":
+            equation = `${firstnumer} X ${secondnumber}`;
+            evaluated = firstnumer * secondnumber;
+            break;
+          case "+":
+            equation = `${firstnumer} + ${secondnumber}`;
+            evaluated = firstnumer + secondnumber;
+            break;
+          case "-":
+            equation = `${firstnumer} - ${secondnumber}`;
+            evaluated = firstnumer - secondnumber;
+            break;
+          case "/":
+            // Ensure that the secondnumber is not 0 to avoid division by 0
+            secondnumber = getRandomInt(19) + 1;
+            equation = `${firstnumer} / ${secondnumber}`;
+            evaluated = firstnumer / secondnumber;
+            break;
+          default:
+            break;
+        }
+  
+        equationobject = { value: `${equation} = ${evaluated}`, evaluated: 'true' };
         equationsArray.push(equationobject);
+        count++;
+        correctCount++;
+      } else {
+        // Generate an incorrect equation
+        firstnumer = getRandomInt(20);
+        secondnumber = getRandomInt(20);
+  
+        // Randomly choose a different operator than the correct equation
+        let incorrectOperator = "";
+        do {
+          incorrectOperator = operators[getRandomInt(operators.length)];
+        } while (incorrectOperator === operator);
+  
+        let equation;
+        let evaluated;
+  
+        // Generate the incorrect equation based on the randomly selected operator
+        switch (incorrectOperator) {
+          case "X":
+            equation = `${firstnumer} X ${secondnumber}`;
+            evaluated = firstnumer * secondnumber + getRandomInt(10) - 5;
+            break;
+          case "+":
+            equation = `${firstnumer} + ${secondnumber}`;
+            evaluated = firstnumer + secondnumber + getRandomInt(10) - 5;
+            break;
+          case "-":
+            equation = `${firstnumer} - ${secondnumber}`;
+            evaluated = firstnumer - secondnumber + getRandomInt(10) - 5;
+            break;
+          case "/":
+            // Ensure that the secondnumber is not 0 to avoid division by 0
+            secondnumber = getRandomInt(19) + 1;
+            equation = `${firstnumer} / ${secondnumber}`;
+            evaluated = firstnumer / secondnumber + (getRandomInt(10) - 5) / 10;
+            break;
+          default:
+            break;
+        }
+  
+        equationobject = { value: `${equation} = ${evaluated}`, evaluated: 'false' };
+        equationsArray.push(equationobject);
+        count++;
+      }
     }
+  
     shuffleArray(equationsArray);
-    //console.log("Equations = ",equationsArray)
-    
-}  
+    console.log("Equations =", equationsArray);
+  }
+  
+  
+  
 function showGamePage(){
     gamePage.hidden = false;
     countDownPage.hidden = true;
